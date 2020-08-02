@@ -39,6 +39,7 @@ function love.update(dt)
     love.event.quit()
   end
   
+  Timer.update(dt)
   stateManager:update(dt)
   
   love.keyboard.keysPressed = {}
