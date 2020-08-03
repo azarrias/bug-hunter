@@ -8,7 +8,8 @@ tiny = require 'libs.tiny'
 require 'defs'
 
 -- general purpose / utility
-require 'StartState'
+require 'StateFade'
+require 'StateStart'
 require 'util'
 
 --[[

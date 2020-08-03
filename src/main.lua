@@ -26,7 +26,7 @@ function love.load()
   -- use a stack for the game state machine
   -- this way, all data and behavior is preserved between state changes
   stateManager = tiny.StackFSM()
-  stateManager:Push(StartState())
+  stateManager:Push(StateStart())
   
   love.keyboard.keysPressed = {}
   love.mouse.buttonPressed = {}
