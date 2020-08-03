@@ -52,5 +52,6 @@ TEXTURES = {
   ['bamboon-back'] = love.graphics.newImage('graphics/monsters/bamboon-back.png'),
   ['bamboon-front'] = love.graphics.newImage('graphics/monsters/bamboon-front.png'),
   ['cardiwing-back'] = love.graphics.newImage('graphics/monsters/cardiwing-back.png'),
-  ['cardiwing-front'] = love.graphics.newImage('graphics/monsters/cardiwing-front.png')
+  ['cardiwing-front'] = love.graphics.newImage('graphics/monsters/cardiwing-front.png'),
+  ['gui-enter'] = love.graphics.newImage('graphics/gui_enter.png')
 }

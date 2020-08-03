@@ -3,9 +3,10 @@ Textbox = Class{}
 local leftMargin, upMargin
 
 function Textbox:init(x, y, width, height, text, font)
-  leftMargin = 6
-  upMargin = 6
+  leftMargin = 8
+  upMargin = 8
   self.panel = Panel(x, y, width - x, height)
+  self.enterSprite = TEXTURES['gui-enter']
   self.x = x
   self.y = y
   self.width = width
@@ -69,4 +70,6 @@ function Textbox:render()
   for i = 1, #self.displayingChunks do
     love.graphics.print(self.displayingChunks[i], self.x + leftMargin, self.y + upMargin + (i - 1) * self.font:getHeight())
   end
+  
+  love.graphics.draw(self.enterSprite, self.width - self.x - 6, self.height - 6)
 end

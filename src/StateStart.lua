@@ -2,7 +2,7 @@ StateStart = Class{__includes = tiny.State}
 
 local INTRO_DIALOG = "Welcome to Bug Hunter!\n\nTo start fighting monsters with your own randomly assigned" ..
   " monster, just walk in the tall grass!\nIf you need to heal, just press 'P' in the field! " ..
-  "\n\nGood luck!"
+  "\nGood luck!"
 
 function StateStart:init()
   SOUNDS['intro-music']:setLooping(true)
