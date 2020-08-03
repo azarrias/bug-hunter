@@ -8,8 +8,11 @@ tiny = require 'libs.tiny'
 require 'defs'
 
 -- general purpose / utility
+require 'Panel'
+require 'StateDialogue'
 require 'StateFade'
 require 'StateStart'
+require 'Textbox'
 require 'util'
 
 --[[

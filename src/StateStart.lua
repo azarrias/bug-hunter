@@ -1,13 +1,12 @@
 StateStart = Class{__includes = tiny.State}
 
-local INTRO_DIALOG = "Welcome to Bug Hunter! To start fighting monsters with your own randomly assigned" ..
-  " monster, just walk in the tall grass! If you need to heal, just press 'P' in the field! " ..
-  "Good luck! "
+local INTRO_DIALOG = "Welcome to Bug Hunter!\n\nTo start fighting monsters with your own randomly assigned" ..
+  " monster, just walk in the tall grass!\nIf you need to heal, just press 'P' in the field! " ..
+  "\n\nGood luck!"
 
 function StateStart:init()
   SOUNDS['intro-music']:setLooping(true)
   SOUNDS['intro-music']:play()
-  INTRO_DIALOG = INTRO_DIALOG .. (MOBILE_OS and "(Tap screen to dismiss dialogues)" or "(Press Enter to dismiss dialogues)")
   
   -- create game object and give it a random sprite
   self.monster = tiny.Entity(VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2 + TILE_SIZE)
@@ -40,6 +39,7 @@ function StateStart:update(dt)
         self.tween:remove()
         stateManager:Pop()
         
+        stateManager:Push(StateDialogue(INTRO_DIALOG))
         stateManager:Push(StateFade({1, 1, 1, 1}, {1, 1, 1, 0}, 1,
           function() end))
       end))
