@@ -27,6 +27,13 @@ VIRTUAL_SIZE = tiny.Vector2D(384, 216)
 TILE_SIZE = 16
 
 -- resources
+FONTS = {
+  ['small'] = love.graphics.newFont('fonts/font.ttf', 8),
+  ['medium'] = love.graphics.newFont('fonts/font.ttf', 16),
+  ['large'] = love.graphics.newFont('fonts/font.ttf', 32),
+  ['huge'] = love.graphics.newFont('fonts/font.ttf', 64)
+}
+
 SOUNDS = {
   ['intro-music'] = love.audio.newSource('sounds/intro.mp3', WEB_OS and 'static' or 'stream')
 }
