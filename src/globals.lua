@@ -15,6 +15,7 @@ require 'StateFade'
 require 'StatePlay'
 require 'StateStart'
 require 'Textbox'
+require 'TileMap'
 require 'util'
 
 --[[
@@ -30,7 +31,7 @@ WEB_OS = (love._version_major > 0 or love._version_minor >= 9) and love.system.g
 -- pixels resolution
 WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(384, 216)
-TILE_SIZE = 16
+TILE_SIZE = tiny.Vector2D(16, 16)
 ENTITY_SIZE = tiny.Vector2D(16, 16)
 
 -- resources
@@ -57,9 +58,13 @@ TEXTURES = {
   ['cardiwing-back'] = love.graphics.newImage('graphics/monsters/cardiwing-back.png'),
   ['cardiwing-front'] = love.graphics.newImage('graphics/monsters/cardiwing-front.png'),
   ['entities'] = love.graphics.newImage('graphics/entities.png'),
-  ['gui-enter'] = love.graphics.newImage('graphics/gui_enter.png')
+  ['gui-enter'] = love.graphics.newImage('graphics/gui_enter.png'),
+  ['tiles'] = love.graphics.newImage('graphics/sheet.png')
 }
 
-FRAMES = {
-  ['player-idle-down'] = GenerateQuads(TEXTURES['entities'], 1, 1, ENTITY_SIZE, tiny.Vector2D(80, 0))
+QUADS = {
+  ['player-idle-down'] = GenerateQuads(TEXTURES['entities'], 1, 1, ENTITY_SIZE, tiny.Vector2D(64, 0)),
+  ['tile-bush'] = GenerateQuads(TEXTURES['tiles'], 1, 1, TILE_SIZE, tiny.Vector2D(16, 80)),
+  ['tile-empty'] = GenerateQuads(TEXTURES['tiles'], 1, 1, TILE_SIZE, tiny.Vector2D(80, 192)),
+  ['tiles-grass'] = GenerateQuads(TEXTURES['tiles'], 1, 2, TILE_SIZE, tiny.Vector2D(80, 80))
 }

@@ -9,19 +9,19 @@ function StateStart:init()
   SOUNDS['intro-music']:play()
   
   -- create game object and give it a random sprite
-  self.monster = tiny.Entity(VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2 + TILE_SIZE)
+  self.monster = tiny.Entity(VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2 + TILE_SIZE.y)
   local sprite = self:GetRandomMonsterSprite()
   self.monster:AddComponent(sprite)
   
   -- randomly change the sprite every 3 seconds
   self.tween = Timer.every(3, function()
     Timer.tween(0.2, {
-        [self.monster.position] = { x = -TILE_SIZE * 2 }
+        [self.monster.position] = { x = -TILE_SIZE.x * 2 }
       })
       :finish(function()
         sprite = self:GetRandomMonsterSprite()
         self.monster:AddComponent(sprite)
-        self.monster.position.x = VIRTUAL_SIZE.x + TILE_SIZE
+        self.monster.position.x = VIRTUAL_SIZE.x + TILE_SIZE.x
         
         Timer.tween(0.2, {
           [self.monster.position] = { x = VIRTUAL_SIZE.x / 2 }
