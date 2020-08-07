@@ -8,9 +8,11 @@ tiny = require 'libs.tiny'
 require 'defs'
 
 -- general purpose / utility
+require 'Level'
 require 'Panel'
 require 'StateDialogue'
 require 'StateFade'
+require 'StatePlay'
 require 'StateStart'
 require 'Textbox'
 require 'util'
@@ -29,6 +31,7 @@ WEB_OS = (love._version_major > 0 or love._version_minor >= 9) and love.system.g
 WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(384, 216)
 TILE_SIZE = 16
+ENTITY_SIZE = tiny.Vector2D(16, 16)
 
 -- resources
 FONTS = {
@@ -53,5 +56,10 @@ TEXTURES = {
   ['bamboon-front'] = love.graphics.newImage('graphics/monsters/bamboon-front.png'),
   ['cardiwing-back'] = love.graphics.newImage('graphics/monsters/cardiwing-back.png'),
   ['cardiwing-front'] = love.graphics.newImage('graphics/monsters/cardiwing-front.png'),
+  ['entities'] = love.graphics.newImage('graphics/entities.png'),
   ['gui-enter'] = love.graphics.newImage('graphics/gui_enter.png')
+}
+
+FRAMES = {
+  ['player-idle-down'] = GenerateQuads(TEXTURES['entities'], 1, 1, ENTITY_SIZE, tiny.Vector2D(80, 0))
 }

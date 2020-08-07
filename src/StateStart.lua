@@ -39,6 +39,7 @@ function StateStart:update(dt)
         self.tween:remove()
         stateManager:Pop()
         
+        stateManager:Push(StatePlay())
         stateManager:Push(StateDialogue(INTRO_DIALOG))
         stateManager:Push(StateFade({1, 1, 1, 1}, {1, 1, 1, 0}, 1,
           function() end))
