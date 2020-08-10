@@ -16,10 +16,17 @@ function PlayerController:update(dt)
   local isDownLeft = love.keyboard.isDown('left')
   local isDownRight = love.keyboard.isDown('right')
   
-  playerAnimatorController:SetValue('MoveDown', isDownDown)
-  playerAnimatorController:SetValue('MoveUp', isDownUp)
-  playerAnimatorController:SetValue('MoveLeft', isDownLeft)
-  playerAnimatorController:SetValue('MoveRight', isDownRight)
+  if self.inEncounter then
+    playerAnimatorController:SetValue('MoveDown', false)
+    playerAnimatorController:SetValue('MoveUp', false)
+    playerAnimatorController:SetValue('MoveLeft', false)
+    playerAnimatorController:SetValue('MoveRight', false)
+  else
+    playerAnimatorController:SetValue('MoveDown', isDownDown)
+    playerAnimatorController:SetValue('MoveUp', isDownUp)
+    playerAnimatorController:SetValue('MoveLeft', isDownLeft)
+    playerAnimatorController:SetValue('MoveRight', isDownRight)
+  end
 end
 
 function PlayerController:CheckForEncounter()
@@ -27,8 +34,21 @@ function PlayerController:CheckForEncounter()
     math.ceil(self.entity.position.y / ENTITY_SIZE.y))
   
   if self.level.tilemap.grassTiles[playerTile.y][playerTile.x] == TILE_ID_BUSH and math.random(100) == 1 then
+    -- trigger music changes
+    SOUNDS['field-music']:pause()
+    SOUNDS['battle-music']:play()
+    
+    -- fade in, push battle state and fade out, which will fall back to 
+    -- the battle state once it pushes itself off
+    stateManager:Push(
+      StateFade({ 1, 1, 1, 0 }, { 1, 1, 1, 1 }, 1,
+        function()
+          stateManager:Push(StateBattle(self.entity))
+          stateManager:Push(StateFade({ 1, 1, 1, 1 }, { 1, 1, 1, 0 }, 1,
+            function() end))
+        end)
+    )
     self.inEncounter = true
-    print("Enter encounter")
   else
     self.inEncounter = false
   end

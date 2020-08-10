@@ -16,6 +16,7 @@ require 'Level'
 require 'Panel'
 require 'Player'
 require 'PlayerController'
+require 'StateBattle'
 require 'StateDialogue'
 require 'StateFade'
 require 'StatePlay'
@@ -54,8 +55,9 @@ FONTS = {
 }
 
 SOUNDS = {
-  ['intro-music'] = love.audio.newSource('sounds/intro.ogg', WEB_OS and 'static' or 'stream'),
-  ['field-music'] = love.audio.newSource('sounds/field_music.wav', WEB_OS and 'static' or 'stream')
+  ['battle-music'] = love.audio.newSource('sounds/battle_music.mp3', WEB_OS and 'static' or 'stream'),
+  ['field-music'] = love.audio.newSource('sounds/field_music.wav', WEB_OS and 'static' or 'stream'),
+  ['intro-music'] = love.audio.newSource('sounds/intro.ogg', WEB_OS and 'static' or 'stream')
 }
 
 TEXTURES = {
