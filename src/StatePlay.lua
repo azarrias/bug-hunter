@@ -2,6 +2,8 @@ StatePlay = Class{__includes = tiny.State}
 
 function StatePlay:init()
   self.level = Level()
+  SOUNDS['field-music']:setLooping(true)
+  SOUNDS['field-music']:play()
 end
 
 function StatePlay:update(dt)

@@ -54,7 +54,8 @@ FONTS = {
 }
 
 SOUNDS = {
-  ['intro-music'] = love.audio.newSource('sounds/intro.mp3', WEB_OS and 'static' or 'stream')
+  ['intro-music'] = love.audio.newSource('sounds/intro.ogg', WEB_OS and 'static' or 'stream'),
+  ['field-music'] = love.audio.newSource('sounds/field_music.wav', WEB_OS and 'static' or 'stream')
 }
 
 TEXTURES = {
