@@ -4,7 +4,7 @@ function Level:init()
   self.rows = math.ceil(VIRTUAL_SIZE.y / TILE_SIZE.y)
   self.columns = math.ceil(VIRTUAL_SIZE.x / TILE_SIZE.x)
   self.tilemap = TileMap(self.columns, self.rows)
-  self.player = Player()
+  self.player = Player(self)
 end
 
 function Level:update(dt)

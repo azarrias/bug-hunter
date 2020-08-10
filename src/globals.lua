@@ -40,6 +40,11 @@ VIRTUAL_SIZE = tiny.Vector2D(384, 216)
 TILE_SIZE = tiny.Vector2D(16, 16)
 ENTITY_SIZE = tiny.Vector2D(16, 16)
 
+-- tile IDs
+TILE_ID_GRASS = {1, 2}
+TILE_ID_EMPTY = 3
+TILE_ID_BUSH = 4
+
 -- resources
 FONTS = {
   ['small'] = love.graphics.newFont('fonts/font.ttf', 8),

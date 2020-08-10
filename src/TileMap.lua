@@ -1,9 +1,5 @@
 TileMap = Class{}
 
-local TILE_ID_GRASS = {1, 2}
-local TILE_ID_EMPTY = 3
-local TILE_ID_BUSH = 4
-
 function TileMap:init(width, height)
   self.width = width
   self.height = height

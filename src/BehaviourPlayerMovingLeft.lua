@@ -22,4 +22,7 @@ function BehaviourPlayerMovingLeft:OnStateUpdate(dt, animatorController)
   if entity.position.x - ENTITY_SIZE.x / 2 <= bounds then
     entity.position.x = bounds + ENTITY_SIZE.x / 2
   end
+  
+  -- there is a chance to find an encounter and enter battle while walking on bushes
+  playerController:CheckForEncounter()
 end

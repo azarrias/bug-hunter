@@ -22,4 +22,7 @@ function BehaviourPlayerMovingDown:OnStateUpdate(dt, animatorController)
   if entity.position.y >= bounds then
     entity.position.y = bounds
   end
+  
+  -- there is a chance to find an encounter and enter battle while walking on bushes
+  playerController:CheckForEncounter()
 end

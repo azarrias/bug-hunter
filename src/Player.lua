@@ -1,14 +1,16 @@
 Player = Class{}
 
-function Player:init()
+function Player:init(level)
   self.gameObject = tiny.Entity(VIRTUAL_SIZE.x / 2, 134)
+  self.level = level
   
   -- sprite component
   local playerSprite = tiny.Sprite(TEXTURES['entities'], QUADS['player-walk-down'][2])
   self.gameObject:AddComponent(playerSprite)
   
-  -- register controller script
+  -- register controller script and keep a reference to level
   self.gameObject:AddScript('PlayerController')
+  self.gameObject.components['Script']['PlayerController'].level = level
   
   local playerAnimatorController = self:SetupAnimatorController()
   self:CreateAnimatorStateMachine(playerAnimatorController)
