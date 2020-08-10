@@ -8,8 +8,14 @@ tiny = require 'libs.tiny'
 require 'defs'
 
 -- general purpose / utility
+require 'BehaviourPlayerMovingDown'
+require 'BehaviourPlayerMovingLeft'
+require 'BehaviourPlayerMovingRight'
+require 'BehaviourPlayerMovingUp'
 require 'Level'
 require 'Panel'
+require 'Player'
+require 'PlayerController'
 require 'StateDialogue'
 require 'StateFade'
 require 'StatePlay'
@@ -63,7 +69,10 @@ TEXTURES = {
 }
 
 QUADS = {
-  ['player-idle-down'] = GenerateQuads(TEXTURES['entities'], 1, 1, ENTITY_SIZE, tiny.Vector2D(64, 0)),
+  ['player-walk-down'] = GenerateQuads(TEXTURES['entities'], 1, 3, ENTITY_SIZE, tiny.Vector2D(48, 0)),
+  ['player-walk-left'] = GenerateQuads(TEXTURES['entities'], 1, 3, ENTITY_SIZE, tiny.Vector2D(48, 16)),
+  ['player-walk-right'] = GenerateQuads(TEXTURES['entities'], 1, 3, ENTITY_SIZE, tiny.Vector2D(48, 32)),
+  ['player-walk-up'] = GenerateQuads(TEXTURES['entities'], 1, 3, ENTITY_SIZE, tiny.Vector2D(48, 48)),
   ['tile-bush'] = GenerateQuads(TEXTURES['tiles'], 1, 1, TILE_SIZE, tiny.Vector2D(16, 80)),
   ['tile-empty'] = GenerateQuads(TEXTURES['tiles'], 1, 1, TILE_SIZE, tiny.Vector2D(80, 192)),
   ['tiles-grass'] = GenerateQuads(TEXTURES['tiles'], 1, 2, TILE_SIZE, tiny.Vector2D(80, 80))
