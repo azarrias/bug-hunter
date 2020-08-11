@@ -21,12 +21,15 @@ function Sprite:render()
   local oldColor = { r, g, b, a }
   love.graphics.setColor(self.color)
   
-  local pos = self.entity.position:Floor()
-  local rot = self.entity.rotation
   local sca = self.entity.scale
   sca.x = sca.x * (self.flipX and -1 or 1)
   sca.y = sca.y * (self.flipY and -1 or 1)
-  love.graphics.draw(self.texture, self.quad, pos.x, pos.y, rot, sca.x, sca.y, self.pivot.x, self.pivot.y)
+  love.graphics.draw(self.texture, self.quad, 
+    math.floor(self.entity.position.x), 
+    math.floor(self.entity.position.y), 
+    self.entity.rotation, 
+    sca.x, sca.y, 
+    self.pivot.x, self.pivot.y)
   
   love.graphics.setColor(oldColor)
 end
@@ -40,7 +43,7 @@ function Sprite:SetDrawable(texture, quad)
   -- set pivot at the center of the sprite
   local _, _, width, height = self.quad:getViewport()
   self.size = Vector2D(width, height)
-  self.pivot = (self.size / 2):Floor()
+  self.pivot = Vector2D(math.floor(self.size.x / 2), math.floor(self.size.y / 2))
 end
 
 return Sprite
