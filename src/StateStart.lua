@@ -8,9 +8,13 @@ function StateStart:init()
   SOUNDS['intro-music']:setLooping(true)
   SOUNDS['intro-music']:play()
   
-  -- create game object and give it a random sprite
+  -- create game object
   self.monster = tiny.Entity(VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2 + TILE_SIZE.y)
-  local sprite = self:GetRandomMonsterSprite()
+  
+  -- register controller script, assign sprite and keep a reference to the monster that we picked
+  local monsterController = self.monster:AddScript('MonsterController')
+  --local sprite = self.monster.components['Script']['MonsterController']:GetRandomMonsterSprite()
+  local sprite = monsterController:GetRandomMonsterSprite()
   self.monster:AddComponent(sprite)
   
   -- randomly change the sprite every 3 seconds
@@ -19,7 +23,7 @@ function StateStart:init()
         [self.monster.position] = { x = -TILE_SIZE.x * 2 }
       })
       :finish(function()
-        sprite = self:GetRandomMonsterSprite()
+        sprite = monsterController:GetRandomMonsterSprite()
         self.monster:AddComponent(sprite)
         self.monster.position.x = VIRTUAL_SIZE.x + TILE_SIZE.x
         
@@ -39,7 +43,7 @@ function StateStart:update(dt)
         self.tween:remove()
         stateManager:Pop()
         
-        stateManager:Push(StatePlay())
+        stateManager:Push(StatePlay(self.monster))
         stateManager:Push(StateDialogue(INTRO_DIALOG))
         stateManager:Push(StateFade({1, 1, 1, 1}, {1, 1, 1, 0}, 1,
           function() end))

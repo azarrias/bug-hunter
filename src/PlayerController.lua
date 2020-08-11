@@ -5,6 +5,7 @@ function PlayerController:init()
   self.speed = 60
   self.inEncounter = false
   self.level = nil
+  self.monster = nil
 end
 
 function PlayerController:update(dt)
