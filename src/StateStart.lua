@@ -13,6 +13,7 @@ function StateStart:init()
   
   -- register controller script, assign sprite and keep a reference to the monster that we picked
   local monsterController = self.monster:AddScript('MonsterController')
+  monsterController.level = 1
   self.monsterSprite = MonsterSprite(monsterController.monsterId..'-front', 
     VIRTUAL_SIZE.x / 2 - MONSTER_SIZE.x / 2,
     VIRTUAL_SIZE.y / 2 - MONSTER_SIZE.y / 2)

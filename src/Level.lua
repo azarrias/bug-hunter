@@ -26,7 +26,7 @@ function Level:CreatePlayer(monster)
   -- register controller script and keep a reference to level
   local playerController = player:AddScript('PlayerController')
   playerController.level = self
-  playerController.monster = monster  
+  playerController.monster = monster
 
   -- add animator controller
   local playerAnimatorController = tiny.AnimatorController('PlayerAnimatorController')
