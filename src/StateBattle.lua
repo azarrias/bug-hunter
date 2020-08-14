@@ -1,27 +1,33 @@
 StateBattle = Class{__includes = tiny.State}
 
 function StateBattle:init(player)
+  self.circleRadius = tiny.Vector2D(72, 24)
+  self.panel = Panel(0, VIRTUAL_SIZE.y - 64, VIRTUAL_SIZE.x, 64)
+ 
   -- player
   self.player = player
   self.playerController = player.components['Script']['PlayerController']
   self.playerMonsterId = self.playerController.monster.components['Script']['MonsterController'].monsterId
-  self.playerMonsterSprite = MonsterSprite(self.playerMonsterId..'-back', 32, VIRTUAL_SIZE.y - 128)
-  self.playerSprite = TEXTURES[self.playerMonsterId..'-back']
-  self.playerCircle = tiny.Vector2D(66, VIRTUAL_SIZE.y - 64)
+  self.playerMonsterSprite = MonsterSprite(self.playerMonsterId..'-back', -self.circleRadius.x - MONSTER_SIZE.x / 2, VIRTUAL_SIZE.y - 128)
+  --self.playerSprite = TEXTURES[self.playerMonsterId..'-back']
+  self.playerCircle = tiny.Vector2D(-self.circleRadius.x, VIRTUAL_SIZE.y - 64)
   
   -- opponent (game object only to hold the monster controller)
   self.opponent = tiny.Entity(0, 0)
   local opponentMonsterController = self.opponent:AddScript('MonsterController')
   self.opponentMonsterSprite = MonsterSprite(opponentMonsterController.monsterId..'-front', 
-    VIRTUAL_SIZE.x - 96, 8)
-  self.opponentCircle = tiny.Vector2D(VIRTUAL_SIZE.x - 70, 60)
-  
-  self.panel = Panel(0, VIRTUAL_SIZE.y - 64, VIRTUAL_SIZE.x, 64)
+    VIRTUAL_SIZE.x + self.circleRadius.x - MONSTER_SIZE.x / 2, 8)
+  self.opponentCircle = tiny.Vector2D(VIRTUAL_SIZE.x + self.circleRadius.x, 60)
   
   -- flag for when the battle can take input, set in the first update call
-  self.battleStarted = false
-  
-  self.circleRadius = tiny.Vector2D(72, 24)
+  self.battleStarted = false  
+end
+
+function StateBattle:update(dt)
+  -- this will trigger the first time this state is actively updating on the stack
+  if not self.battleStarted then
+    self:TriggerSlideIn()
+  end
 end
   
 function StateBattle:render()
@@ -37,4 +43,16 @@ function StateBattle:render()
   self.playerMonsterSprite:render()
 
   self.panel:render()
+end
+
+function StateBattle:TriggerSlideIn()
+  self.battleStarted = true
+
+  -- slide the sprites and circles in from the edges, then trigger first dialogue boxes
+  Timer.tween(1, {
+    [self.playerMonsterSprite.position] = { x = 32 },
+    [self.opponentMonsterSprite.position] = { x = VIRTUAL_SIZE.x - 96 },
+    [self.playerCircle] = { x = 66 },
+    [self.opponentCircle] = { x = VIRTUAL_SIZE.x - 70 }
+  })
 end
