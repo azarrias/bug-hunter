@@ -8,27 +8,28 @@ function StateStart:init()
   SOUNDS['intro-music']:setLooping(true)
   SOUNDS['intro-music']:play()
   
-  -- create game object
-  self.monster = tiny.Entity(VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2 + TILE_SIZE.y)
+  -- create game object (only to hold the monsterController script)
+  self.monster = tiny.Entity(0, 0)
   
   -- register controller script, assign sprite and keep a reference to the monster that we picked
   local monsterController = self.monster:AddScript('MonsterController')
+  self.monsterSprite = MonsterSprite(monsterController.monsterId..'-front', 
+    VIRTUAL_SIZE.x / 2 - MONSTER_SIZE.x / 2,
+    VIRTUAL_SIZE.y / 2 - MONSTER_SIZE.y / 2)
   --local sprite = self.monster.components['Script']['MonsterController']:GetRandomMonsterSprite()
-  local sprite = monsterController:GetRandomMonsterSprite()
-  self.monster:AddComponent(sprite)
   
   -- randomly change the sprite every 3 seconds
   self.tween = Timer.every(3, function()
     Timer.tween(0.2, {
-        [self.monster.position] = { x = -TILE_SIZE.x * 2 }
+        [self.monsterSprite.position] = { x = -MONSTER_SIZE.x }
       })
       :finish(function()
-        sprite = monsterController:GetRandomMonsterSprite()
-        self.monster:AddComponent(sprite)
-        self.monster.position.x = VIRTUAL_SIZE.x + TILE_SIZE.x
+        monsterController:RandomizeMonsterId()
+        self.monsterSprite.texture = monsterController.monsterId..'-front'
+        self.monsterSprite.position.x = VIRTUAL_SIZE.x
         
         Timer.tween(0.2, {
-          [self.monster.position] = { x = VIRTUAL_SIZE.x / 2 }
+          [self.monsterSprite.position] = { x = VIRTUAL_SIZE.x / 2 - MONSTER_SIZE.x / 2 }
         })
       end)
   end)
@@ -64,11 +65,5 @@ function StateStart:render()
   love.graphics.ellipse('fill', VIRTUAL_SIZE.x / 2, VIRTUAL_SIZE.y / 2 + 32, 72, 24)
   
   love.graphics.setColor(1, 1, 1, 1)
-  self.monster:render()
-end
-
-function StateStart:GetRandomMonsterSprite()
-  local monster_id = MONSTER_IDS[math.random(#MONSTER_IDS)]
-  local sprite_name = MONSTER_DEFS[monster_id].battleSpriteFront
-  return tiny.Sprite(TEXTURES[sprite_name])
+  self.monsterSprite:render()
 end

@@ -14,6 +14,7 @@ require 'BehaviourPlayerMovingRight'
 require 'BehaviourPlayerMovingUp'
 require 'Level'
 require 'MonsterController'
+require 'MonsterSprite'
 require 'Panel'
 require 'PlayerController'
 require 'StateBattle'
@@ -40,6 +41,7 @@ WINDOW_SIZE = tiny.Vector2D(1280, 720)
 VIRTUAL_SIZE = tiny.Vector2D(384, 216)
 TILE_SIZE = tiny.Vector2D(16, 16)
 ENTITY_SIZE = tiny.Vector2D(16, 16)
+MONSTER_SIZE = tiny.Vector2D(64, 64)
 
 -- tile IDs
 TILE_ID_GRASS = {1, 2}
