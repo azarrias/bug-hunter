@@ -14,8 +14,8 @@ function StateBattle:init(player)
   
   -- opponent (game object only to hold the monster controller)
   self.opponent = tiny.Entity(0, 0)
-  local opponentMonsterController = self.opponent:AddScript('MonsterController')
-  self.opponentMonsterSprite = MonsterSprite(opponentMonsterController.monsterId..'-front', 
+  self.opponentMonsterController = self.opponent:AddScript('MonsterController')
+  self.opponentMonsterSprite = MonsterSprite(self.opponentMonsterController.monsterId..'-front', 
     VIRTUAL_SIZE.x + self.circleRadius.x - MONSTER_SIZE.x / 2, 8)
   self.opponentCircle = tiny.Vector2D(VIRTUAL_SIZE.x + self.circleRadius.x, 60)
   
@@ -55,4 +55,18 @@ function StateBattle:TriggerSlideIn()
     [self.playerCircle] = { x = 66 },
     [self.opponentCircle] = { x = VIRTUAL_SIZE.x - 70 }
   })
+  :finish(function()
+    self:TriggerStartDialogue()
+    self.renderHealthBars = true
+  end)
+end
+
+function StateBattle:TriggerStartDialogue()
+  -- display a dialogue first for the pokemon that appeared, then the one being sent out
+  stateManager:Push(StateBattleMessage('A wild ' .. self.opponentMonsterController.monsterId ..
+    ' appeared!',
+    -- callback for when the battle message is closed
+    function()
+      stateManager:Push(StateBattleMessage('Go, ' .. self.playerMonsterId .. '!'))
+    end))
 end

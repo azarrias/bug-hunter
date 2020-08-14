@@ -16,7 +16,6 @@ function StateStart:init()
   self.monsterSprite = MonsterSprite(monsterController.monsterId..'-front', 
     VIRTUAL_SIZE.x / 2 - MONSTER_SIZE.x / 2,
     VIRTUAL_SIZE.y / 2 - MONSTER_SIZE.y / 2)
-  --local sprite = self.monster.components['Script']['MonsterController']:GetRandomMonsterSprite()
   
   -- randomly change the sprite every 3 seconds
   self.tween = Timer.every(3, function()
