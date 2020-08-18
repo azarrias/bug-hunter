@@ -14,7 +14,7 @@ function StateBattle:init(player)
   -- opponent (game object only to hold the monster controller)
   self.opponent = tiny.Entity(0, 0)
   self.opponentMonsterController = self.opponent:AddScript('MonsterController')
-  self.opponentMonsterController.level = math.random(math.max(1, self.playerMonsterController.level - 1), self.playerMonsterController.level + 1)
+  self.opponentMonsterController:SetLevel(math.random(math.max(1, self.playerMonsterController.level - 1), self.playerMonsterController.level + 1))
   self.opponentMonsterSprite = MonsterSprite(self.opponentMonsterController.monsterId..'-front', 
     VIRTUAL_SIZE.x + self.circleRadius.x - MONSTER_SIZE.x / 2, 8)
   self.opponentCircle = tiny.Vector2D(VIRTUAL_SIZE.x + self.circleRadius.x, 60)
@@ -30,6 +30,16 @@ function StateBattle:init(player)
     color = { r = 189 / 255, g = 32 / 255, b = 32 / 255 },
     value = self.playerMonsterController.currentHP,
     maxValue = self.playerMonsterController.maxHP
+  }
+  
+  self.playerExpBar = ProgressBar {
+    x = VIRTUAL_SIZE.x - 160,
+    y = VIRTUAL_SIZE.y - 73,
+    width = 152,
+    height = 6,
+    color = { r = 32 / 255, g = 32 /255, b = 189 / 255 },
+    value = self.playerMonsterController.currentExp,
+    maxValue = self.playerMonsterController.expToLevelUp
   }
   
   self.opponentHealthBar = ProgressBar {
@@ -69,6 +79,7 @@ function StateBattle:render()
   
   if self.renderHealthBars then
     self.playerHealthBar:render()
+    self.playerExpBar:render()
     self.opponentHealthBar:render()
     
     -- render level text
