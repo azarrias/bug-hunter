@@ -13,12 +13,15 @@ require 'BehaviourPlayerMovingLeft'
 require 'BehaviourPlayerMovingRight'
 require 'BehaviourPlayerMovingUp'
 require 'Level'
+require 'Menu'
+require 'MenuItems'
 require 'MonsterController'
 require 'MonsterSprite'
 require 'Panel'
 require 'PlayerController'
 require 'ProgressBar'
 require 'StateBattle'
+require 'StateBattleMenu'
 require 'StateBattleMessage'
 require 'StateDialogue'
 require 'StateFade'
@@ -75,6 +78,7 @@ TEXTURES = {
   ['bamboon-front'] = love.graphics.newImage('graphics/monsters/bamboon-front.png'),
   ['cardiwing-back'] = love.graphics.newImage('graphics/monsters/cardiwing-back.png'),
   ['cardiwing-front'] = love.graphics.newImage('graphics/monsters/cardiwing-front.png'),
+  ['cursor'] = love.graphics.newImage('graphics/cursor.png'),
   ['entities'] = love.graphics.newImage('graphics/entities.png'),
   ['gui-enter'] = love.graphics.newImage('graphics/gui_enter.png'),
   ['tiles'] = love.graphics.newImage('graphics/sheet.png')

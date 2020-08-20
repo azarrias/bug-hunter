@@ -118,6 +118,11 @@ function StateBattle:TriggerStartDialogue()
     ' appeared!',
     -- callback for when the battle message is closed
     function()
-      stateManager:Push(StateBattleMessage('Go, ' .. self.playerMonsterController.monsterId .. '!'))
+      stateManager:Push(StateBattleMessage('Go, ' .. self.playerMonsterController.monsterId .. '!',
+        
+      -- push a battle menu onto the stack based FSM that has access to the battle state
+      function()
+        stateManager:Push(StateBattleMenu(self))
+      end))
     end))
 end
