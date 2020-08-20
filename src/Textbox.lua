@@ -5,7 +5,7 @@ local leftMargin, upMargin
 function Textbox:init(x, y, width, height, text, font)
   leftMargin = 8
   upMargin = 8
-  self.panel = Panel(x, y, width - x, height)
+  self.panel = Panel(x, y, width, height)
   self.enterSprite = TEXTURES['gui-enter']
   self.x = x
   self.y = y
@@ -14,7 +14,7 @@ function Textbox:init(x, y, width, height, text, font)
   
   self.text = text
   self.font = font or FONTS['small']
-  _, self.textChunks = self.font:getWrap(self.text, self.width - self.x - 2 * leftMargin)
+  _, self.textChunks = self.font:getWrap(self.text, self.width - 2.6 * leftMargin)
   
   self.chunkCounter = 1
   self.endOfText = false
@@ -71,5 +71,5 @@ function Textbox:render()
     love.graphics.print(self.displayingChunks[i], self.x + leftMargin, self.y + upMargin + (i - 1) * self.font:getHeight())
   end
   
-  love.graphics.draw(self.enterSprite, self.width - self.x - 6, self.height - 6)
+  love.graphics.draw(self.enterSprite, self.x + self.width - 1.5 * leftMargin, self.y + self.height - 1.5 * upMargin)
 end
