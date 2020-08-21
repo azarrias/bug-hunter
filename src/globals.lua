@@ -63,6 +63,7 @@ FONTS = {
 
 SOUNDS = {
   ['battle-music'] = love.audio.newSource('sounds/battle_music.mp3', WEB_OS and 'static' or 'stream'),
+  ['blip'] = love.audio.newSource('sounds/blip.wav', 'static'),
   ['field-music'] = love.audio.newSource('sounds/field_music.wav', WEB_OS and 'static' or 'stream'),
   ['intro-music'] = love.audio.newSource('sounds/intro.ogg', WEB_OS and 'static' or 'stream')
 }

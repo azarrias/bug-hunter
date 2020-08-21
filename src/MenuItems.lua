@@ -15,6 +15,29 @@ function MenuItems:init(def)
 end
 
 function MenuItems:update(dt)
+  if love.keyboard.keysPressed['up'] then
+    if self.currentSelection == 1 then
+      self.currentSelection = #self.items
+    else
+      self.currentSelection = self.currentSelection - 1
+    end
+    SOUNDS['blip']:stop()
+    SOUNDS['blip']:play()
+
+  elseif love.keyboard.keysPressed['down'] then
+    if self.currentSelection == #self.items then
+      self.currentSelection = 1
+    else
+      self.currentSelection = self.currentSelection + 1
+    end
+    SOUNDS['blip']:stop()
+    SOUNDS['blip']:play()
+
+  elseif love.keyboard.keysPressed['return'] or love.keyboard.keysPressed['enter'] then
+    self.items[self.currentSelection].onSelect()
+    SOUNDS['blip']:stop()
+    SOUNDS['blip']:play()
+  end
 end
 
 function MenuItems:render()
