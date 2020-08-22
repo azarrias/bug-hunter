@@ -11,7 +11,10 @@ function StateBattleMenu:init(battleState)
     items = {
       {
         text = 'Fight',
-        onSelect = function() end
+        onSelect = function() 
+          stateManager:Pop()
+          stateManager:Push(StateBattleTurn(self.battleState))
+        end
       },
       {
         text = 'Run',
