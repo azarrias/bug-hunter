@@ -37,6 +37,7 @@ function PlayerController:CheckForEncounter()
   if self.level.tilemap.grassTiles[playerTile.y][playerTile.x] == TILE_ID_BUSH and math.random(100) == 1 then
     -- trigger music changes
     SOUNDS['field-music']:pause()
+    SOUNDS['battle-music']:setVolume(0.3)
     SOUNDS['battle-music']:play()
     
     -- fade in, push battle state and fade out, which will fall back to 

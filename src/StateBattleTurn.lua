@@ -6,7 +6,7 @@ function StateBattleTurn:init(battleState)
   self.opponentMonster = battleState.opponentMonsterController
   
   self.playerMonsterSprite = battleState.playerMonsterSprite
-  self.opponentMonsterSprite = battleState.oponentMonsterSprite
+  self.opponentMonsterSprite = battleState.opponentMonsterSprite
   
   -- check which monster is faster, since it gets to attack first
   if self.playerMonster.speed > self.opponentMonster.speed then
@@ -47,10 +47,23 @@ function StateBattleTurn:enter(params)
 end
 
 function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSprite, attackerBar, defenderBar, onEnd)
+  
+  -- push attack message
   stateManager:Push(StateBattleMessage(attacker.monsterId .. ' attacks ' .. defender.monsterId .. '!',
     function() end, false))
 
-  Timer.after(2, function()
-    onEnd()
+  -- pause for 0.5s, then play attack animation and sfx
+  Timer.after(0.5, function()
+    SOUNDS['powerup']:stop()
+    SOUNDS['powerup']:play()
+    
+    -- blink the attacker sprite (toggle blinking 6 times)
+    Timer.every(0.1, function()
+      attackerSprite.blinking = not attackerSprite.blinking
+    end)
+    :limit(6)
+    :finish(function()
+      onEnd()
+    end)
   end)
 end
