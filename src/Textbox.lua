@@ -19,6 +19,7 @@ function Textbox:init(x, y, width, height, text, font)
   self.chunkCounter = 1
   self.endOfText = false
   self.closed = false
+  self.renderArrow = true
   
   self:next()
 end
@@ -71,5 +72,7 @@ function Textbox:render()
     love.graphics.print(self.displayingChunks[i], self.x + leftMargin, self.y + upMargin + (i - 1) * self.font:getHeight())
   end
   
-  love.graphics.draw(self.enterSprite, self.x + self.width - 1.5 * leftMargin, self.y + self.height - 1.5 * upMargin)
+  if self.renderArrow then
+    love.graphics.draw(self.enterSprite, self.x + self.width - 1.5 * leftMargin, self.y + self.height - 1.5 * upMargin)
+  end
 end

@@ -49,8 +49,10 @@ end
 function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSprite, attackerBar, defenderBar, onEnd)
   
   -- push attack message
-  stateManager:Push(StateBattleMessage(attacker.monsterId .. ' attacks ' .. defender.monsterId .. '!',
-    function() end, false))
+  stateBattleMessage = StateBattleMessage(attacker.monsterId .. ' attacks ' .. defender.monsterId .. '!',
+    function() end)
+  stateBattleMessage.textbox.renderArrow = false
+  stateManager:Push(stateBattleMessage)
 
   -- pause for 0.5s, then play attack animation and attack sfx
   Timer.after(0.5, function()
