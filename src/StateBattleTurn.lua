@@ -74,7 +74,17 @@ function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSpri
       end)
       :limit(6)
       :finish(function()
-        onEnd()
+          
+        -- apply damage depending on the monsters stats and tween the defender's health bar
+        local dmg = math.max(1, attacker.attack - defender.defense)
+        
+        Timer.tween(0.5, {
+          [defenderBar] = { value = defender.currentHP - dmg }
+        })
+        :finish(function()
+          defender.currentHP = defender.currentHP - dmg
+          onEnd()
+        end)
       end)
     end)
   end)
