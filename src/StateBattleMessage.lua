@@ -11,6 +11,8 @@ function StateBattleMessage:init(msg, onClose, canInput)
 
   -- default input to true if nothing was passed in
   if self.canInput == nil then self.canInput = true end
+  
+  self.textbox.renderArrow = self.canInput
 end
 
 function StateBattleMessage:update(dt)

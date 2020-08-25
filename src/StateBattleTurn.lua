@@ -33,13 +33,25 @@ function StateBattleTurn:enter(params)
       -- remove the battle message state created within the Attack function
       stateManager:Pop()
       
+      -- check if any of the monsters are dead
+      if self:CheckDeaths() then
+        stateManager:Pop()
+        return
+      end
+      
       self:Attack(self.secondMonster, self.firstMonster, self.secondMonsterSprite, self.firstMonsterSprite, self.secondBar, self.firstBar, 
         function()
           
           -- remove the battle message state created within the Attack function
           stateManager:Pop()
           
-          -- remove the last attack state from the stack
+          -- check if any of the monsters are dead
+          if self:CheckDeaths() then
+            stateManager:Pop()
+            return
+          end
+          
+          -- remove the last attack state from the stack and push a new one
           stateManager:Pop()
           stateManager:Push(StateBattleMenu(self.battleState))
         end)
@@ -87,5 +99,58 @@ function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSpri
         end)
       end)
     end)
+  end)
+end
+
+function StateBattleTurn:CheckDeaths()
+  if self.playerMonster.currentHP <= 0 then
+    self:Lose()
+    return true
+  elseif self.opponentMonster.currentHP <= 0 then
+    self:Win()
+    return true
+  end
+  
+  return false
+end
+
+function StateBattleTurn:Lose()
+  -- drop player's monster sprite down below the window and restore it's health
+  Timer.tween(0.2, {
+    [self.playerMonsterSprite.position] = { y = VIRTUAL_SIZE.y }
+  })
+  :finish(function()
+    
+    stateManager:Push(StateBattleMessage('You lost!',
+      function()
+        self.playerMonster.currentHP = self.playerMonster.maxHP
+    
+        SOUNDS['battle-music']:stop()
+        SOUNDS['field-music']:play()
+        self.battleState.playerController.inEncounter = false
+        
+        -- pop the last battle state and go back to the field
+        stateManager:Pop()
+      end))
+  end)
+end
+
+function StateBattleTurn:Win()
+  -- drop the opponent's monster sprite down below the window
+  Timer.tween(0.2, {
+    [self.opponentMonsterSprite.position] = { y = VIRTUAL_SIZE.y }
+  })
+  :finish(function()
+    
+    stateManager:Push(StateBattleMessage('Victory!',
+      function()
+        SOUNDS['battle-music']:stop()
+        SOUNDS['field-music']:play()
+        self.battleState.playerController.inEncounter = false
+        
+        -- pop the last battle state and go back to the field
+        stateManager:Pop()
+      end))
+
   end)
 end
