@@ -52,7 +52,7 @@ function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSpri
   stateManager:Push(StateBattleMessage(attacker.monsterId .. ' attacks ' .. defender.monsterId .. '!',
     function() end, false))
 
-  -- pause for 0.5s, then play attack animation and sfx
+  -- pause for 0.5s, then play attack animation and attack sfx
   Timer.after(0.5, function()
     SOUNDS['powerup']:stop()
     SOUNDS['powerup']:play()
@@ -63,7 +63,17 @@ function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSpri
     end)
     :limit(6)
     :finish(function()
-      onEnd()
+      -- play hit sound and flash the opacity of the defender for 3 times
+      SOUNDS['hit']:stop()
+      SOUNDS['hit']:play()
+      
+      Timer.every(0.1, function()
+        defenderSprite.opacity = defenderSprite.opacity == 64 / 255 and 1 or 64 / 255
+      end)
+      :limit(6)
+      :finish(function()
+        onEnd()
+      end)
     end)
   end)
 end
