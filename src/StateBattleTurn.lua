@@ -137,20 +137,70 @@ end
 
 function StateBattleTurn:Win()
   -- drop the opponent's monster sprite down below the window
-  Timer.tween(0.2, {
+  Timer.tween(0.5, {
     [self.opponentMonsterSprite.position] = { y = VIRTUAL_SIZE.y }
   })
   :finish(function()
-    
+    -- play victory music and push victory message
+    SOUNDS['battle-music']:stop()
+    SOUNDS['victory-music']:setLooping(true)
+    SOUNDS['victory-music']:play()
+        
     stateManager:Push(StateBattleMessage('Victory!',
       function()
-        SOUNDS['battle-music']:stop()
-        SOUNDS['field-music']:play()
-        self.battleState.playerController.inEncounter = false
+        -- calculate XP points
+        local exp = (self.opponentMonster.HPIV + self.opponentMonster.attackIV +
+          self.opponentMonster.defenseIV + self.opponentMonster.speedIV) * self.opponentMonster.level
         
-        -- pop the last battle state and go back to the field
-        stateManager:Pop()
+        stateManager:Push(StateBattleMessage('You earned ' .. tostring(exp) .. ' experience points!',
+          function() end, false))
+      
+        Timer.after(1.5, function()
+          SOUNDS['exp']:play()
+          
+          -- tween the XP bar filling up
+          Timer.tween(0.5, {
+            [self.battleState.playerExpBar] = { value = math.min(self.playerMonster.currentExp + exp, self.playerMonster.expToLevelUp) }
+          })
+          :finish(function()
+            
+            -- pop exp message off
+            stateManager:Pop()
+            
+            self.playerMonster.currentExp = self.playerMonster.currentExp + exp
+            
+            -- level up if won xp is enough
+            if self.playerMonster.currentExp > self.playerMonster.expToLevelUp then
+              SOUNDS['levelup']:play()
+              
+              -- set xp to whatever the overlap is
+              self.playerMonster.currentExp = self.playerMonster.currentExp - self.playerMonster.expToLevelUp
+              self.playerMonster:SetLevel(self.playerMonster.level + 1)
+              
+              stateManager:Push(StateBattleMessage('Congratulations! Level Up!',
+                function()
+                  self:TransitionWinToField()
+                end))
+            else
+              self:TransitionWinToField()
+            end
+          end)
+        end)
       end))
-
   end)
+end
+
+function StateBattleTurn:TransitionWinToField()
+  -- fade in
+  stateManager:Push(StateFade({ 1, 1, 1, 0 }, { 1, 1, 1, 1 }, 1, function()
+    -- resume field music
+    SOUNDS['victory-music']:stop()
+    SOUNDS['field-music']:play()
+    
+    -- pop off the battle state and push fade out
+    stateManager:Pop()
+    stateManager:Push(StateFade({ 1, 1, 1, 1 }, { 1, 1, 1, 0 }, 1, function()
+      self.battleState.playerController.inEncounter = false
+    end))
+  end))
 end
