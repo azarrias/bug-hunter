@@ -163,10 +163,8 @@ function StateBattleTurn:Win()
             [self.battleState.playerExpBar] = { value = math.min(self.playerMonster.currentExp + exp, self.playerMonster.expToLevelUp) }
           })
           :finish(function()
-            
             -- pop exp message off
             stateManager:Pop()
-            
             self.playerMonster.currentExp = self.playerMonster.currentExp + exp
             
             -- level up if won xp is enough
@@ -174,9 +172,12 @@ function StateBattleTurn:Win()
               SOUNDS['levelup']:play()
               
               -- set xp to whatever the overlap is
-              self.playerMonster.currentExp = self.playerMonster.currentExp - self.playerMonster.expToLevelUp
-              self.playerMonster:SetLevel(self.playerMonster.level + 1)
-              
+              while self.playerMonster.currentExp > self.playerMonster.expToLevelUp do
+                self.playerMonster.currentExp = self.playerMonster.currentExp - self.playerMonster.expToLevelUp
+                self.playerMonster:SetLevel(self.playerMonster.level + 1)
+                self.playerMonster.currentHP = self.playerMonster.maxHP
+              end
+
               stateManager:Push(StateBattleMessage('Congratulations! Level Up!',
                 function()
                   self:TransitionWinToField()
