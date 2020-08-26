@@ -135,6 +135,27 @@ function StateBattleTurn:Lose()
   end)
 end
 
+function StateBattleTurn:TweenPlayerBars(finishCallback)
+  self.battleState.playerExpBar.value = 0
+  self.playerMonster.currentExp = self.playerMonster.currentExp - self.playerMonster.expToLevelUp
+  self.playerMonster:SetLevel(self.playerMonster.level + 1)
+  self.playerMonster.currentHP = self.playerMonster.maxHP
+  self.battleState.playerExpBar.maxValue = self.playerMonster.expToLevelUp
+  
+  Timer.tween(0.5, {
+    [self.battleState.playerExpBar] = { value = math.min(self.playerMonster.currentExp, self.playerMonster.expToLevelUp) },
+    [self.battleState.playerHealthBar] = { value = self.playerMonster.currentHP }
+  })
+  :finish(function()
+    if self.playerMonster.currentExp > self.playerMonster.expToLevelUp then
+      self:TweenPlayerBars(function() end)
+      finishCallback()
+    else
+      finishCallback()
+    end
+  end)
+end
+
 function StateBattleTurn:Win()
   -- drop the opponent's monster sprite down below the window
   Timer.tween(0.5, {
@@ -171,17 +192,12 @@ function StateBattleTurn:Win()
             if self.playerMonster.currentExp > self.playerMonster.expToLevelUp then
               SOUNDS['levelup']:play()
               
-              -- set xp to whatever the overlap is
-              while self.playerMonster.currentExp > self.playerMonster.expToLevelUp do
-                self.playerMonster.currentExp = self.playerMonster.currentExp - self.playerMonster.expToLevelUp
-                self.playerMonster:SetLevel(self.playerMonster.level + 1)
-                self.playerMonster.currentHP = self.playerMonster.maxHP
-              end
-
-              stateManager:Push(StateBattleMessage('Congratulations! Level Up!',
-                function()
-                  self:TransitionWinToField()
-                end))
+              self:TweenPlayerBars(function()
+                stateManager:Push(StateBattleMessage('Congratulations! Level Up!',
+                  function()
+                    self:TransitionWinToField()
+                  end))
+              end)
             else
               self:TransitionWinToField()
             end
