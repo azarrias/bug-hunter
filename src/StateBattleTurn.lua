@@ -122,14 +122,22 @@ function StateBattleTurn:Lose()
     
     stateManager:Push(StateBattleMessage('You lost!',
       function()
-        self.playerMonster.currentHP = self.playerMonster.maxHP
-    
-        SOUNDS['battle-music']:stop()
-        SOUNDS['field-music']:play()
-        self.battleState.playerController.inEncounter = false
+        -- fade in to black
+        stateManager:Push(StateFade({ 0, 0, 0, 0 }, { 0, 0, 0, 1 }, 1, 
+          function()
+            -- restore player's monster HP
+            self.playerMonster.currentHP = self.playerMonster.maxHP
         
-        -- pop the last battle state and go back to the field
-        stateManager:Pop()
+            SOUNDS['battle-music']:stop()
+            SOUNDS['field-music']:play()
+            self.battleState.playerController.inEncounter = false
+            
+            -- pop the last battle state and fade out black to the field
+            stateManager:Pop()
+            stateManager:Push(StateFade({ 0, 0, 0, 1 }, { 0, 0, 0, 0 }, 1, function()
+              stateManager:Push(StateDialogue('Your monster has been fully restored; try again!'))
+            end))
+          end))
       end))
   end)
 end
