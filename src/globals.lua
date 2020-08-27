@@ -71,6 +71,7 @@ SOUNDS = {
   ['intro-music'] = love.audio.newSource('sounds/intro.ogg', WEB_OS and 'static' or 'stream'),
   ['levelup'] = love.audio.newSource('sounds/levelup.wav', 'static'),
   ['powerup'] = love.audio.newSource('sounds/powerup.wav', 'static'),
+  ['run'] = love.audio.newSource('sounds/run.wav', 'static'),
   ['victory-music'] = love.audio.newSource('sounds/victory.wav', WEB_OS and 'static' or 'stream')
 }
 
