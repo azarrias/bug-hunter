@@ -62,8 +62,7 @@ function StateBattleTurn:Attack(attacker, defender, attackerSprite, defenderSpri
   
   -- push attack message
   stateBattleMessage = StateBattleMessage(attacker.monsterId .. ' attacks ' .. defender.monsterId .. '!',
-    function() end)
-  stateBattleMessage.textbox.renderArrow = false
+    function() end, false)
   stateManager:Push(stateBattleMessage)
 
   -- pause for 0.5s, then play attack animation and attack sfx
@@ -141,6 +140,7 @@ function StateBattleTurn:TweenPlayerBars(finishCallback)
   self.playerMonster:SetLevel(self.playerMonster.level + 1)
   self.playerMonster.currentHP = self.playerMonster.maxHP
   self.battleState.playerExpBar.maxValue = self.playerMonster.expToLevelUp
+  SOUNDS['levelup']:play()
   
   Timer.tween(0.5, {
     [self.battleState.playerExpBar] = { value = math.min(self.playerMonster.currentExp, self.playerMonster.expToLevelUp) },
@@ -164,7 +164,6 @@ function StateBattleTurn:Win()
   :finish(function()
     -- play victory music and push victory message
     SOUNDS['battle-music']:stop()
-    SOUNDS['victory-music']:setLooping(true)
     SOUNDS['victory-music']:play()
         
     stateManager:Push(StateBattleMessage('Victory!',
@@ -190,8 +189,6 @@ function StateBattleTurn:Win()
             
             -- level up if won xp is enough
             if self.playerMonster.currentExp > self.playerMonster.expToLevelUp then
-              SOUNDS['levelup']:play()
-              
               self:TweenPlayerBars(function()
                 stateManager:Push(StateBattleMessage('Congratulations! Level Up!',
                   function()
