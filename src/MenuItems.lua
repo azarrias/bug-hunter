@@ -7,7 +7,7 @@ function MenuItems:init(def)
 
   self.height = def.height
   self.width = def.width
-  self.font = def.font or FONTS['small']
+  self.font = def.font or FONTS['medium']
 
   self.gapHeight = self.height / #self.items
 
@@ -37,14 +37,35 @@ function MenuItems:update(dt)
     self.items[self.currentSelection].onSelect()
     SOUNDS['blip']:stop()
     SOUNDS['blip']:play()
+  
+  elseif love.mouse.buttonPressed[1] then
+    local x, y = push:toGame(love.mouse.getPosition())
+    x = math.min(math.max(-1, x), VIRTUAL_SIZE.x)
+    y = math.min(math.max(-1, y), VIRTUAL_SIZE.y)
+    
+    local currentY = self.y + math.floor(self.gapHeight / 2)
+    for i = 1, #self.items do
+      local paddedY = currentY - self.font:getHeight() / 2
+      
+      if x >= self.x and x <= self.x + self.width and y >= paddedY and y <= paddedY + self.font:getHeight() then
+        self.items[i].onSelect()
+        SOUNDS['blip']:stop()
+        SOUNDS['blip']:play()
+        break
+      end
+      
+      currentY = currentY + self.gapHeight
+    end
   end
 end
 
 function MenuItems:render()
-  local currentY = self.y
+  love.graphics.setFont(self.font)
+  
+  local currentY = self.y + math.floor(self.gapHeight / 2)
 
   for i = 1, #self.items do
-    local paddedY = currentY + (self.gapHeight / 2) - self.font:getHeight() / 2
+    local paddedY = currentY - self.font:getHeight() / 2
 
     -- draw selection marker if we're at the right index
     if i == self.currentSelection then
@@ -52,7 +73,13 @@ function MenuItems:render()
     end
 
     love.graphics.printf(self.items[i].text, self.x, paddedY, self.width, 'center')
-
+    
     currentY = currentY + self.gapHeight
   end
+--[[ debugging mouse position
+  local x, y = push:toGame(love.mouse.getPosition())
+  x = math.min(math.max(-1, x), WINDOW_SIZE.x)
+  y = math.min(math.max(-1, y), WINDOW_SIZE.y)
+  love.graphics.printf("Mouse Position: (" .. tostring(x) .. ", " .. tostring(y) .. ")", 10, 10, VIRTUAL_SIZE.x)
+]]
 end

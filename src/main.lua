@@ -63,10 +63,12 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
+  love.mouse.buttonPressed[button] = true
   urutora.pressed(x, y)
 end
 
 function love.mousereleased(x, y, button)
+  love.mouse.buttonReleased[button] = true
   urutora.released(x, y)
 end
 
