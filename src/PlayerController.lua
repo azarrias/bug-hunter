@@ -6,12 +6,14 @@ function PlayerController:init()
   self.inEncounter = false
   self.level = nil
   self.monster = nil
-  self.joystick = urutora.joy({ x = 50, y = VIRTUAL_SIZE.y / 2 - 30 / 2, w = 30, h = 30 })
-  self.joystick:setStyle({
-    fgColor = { 0, 0, 0, 0.3 }
-  })
-  self.joystick:hide()
-  self.joystick:disable()
+  if MOBILE_OS then
+    self.joystick = urutora.joy({ x = 50, y = VIRTUAL_SIZE.y / 2 - 30 / 2, w = 30, h = 30 })
+    self.joystick:setStyle({
+      fgColor = { 0, 0, 0, 0.3 }
+    })
+    self.joystick:hide()
+    self.joystick:disable()
+  end
 end
 
 function PlayerController:update(dt)
@@ -23,10 +25,10 @@ function PlayerController:update(dt)
   local isDownLeft = love.keyboard.isDown('left')
   local isDownRight = love.keyboard.isDown('right')
   
-  local isJoystickDown = true and self.joystick:getY() > 0.8 or false
-  local isJoystickUp = true and self.joystick:getY() < -0.8 or false
-  local isJoystickLeft = true and self.joystick:getX() < -0.8 or false
-  local isJoystickRight = true and self.joystick:getX() > 0.8 or false
+  local isJoystickDown = MOBILE_OS and self.joystick:getY() > 0.8
+  local isJoystickUp = MOBILE_OS and self.joystick:getY() < -0.8
+  local isJoystickLeft = MOBILE_OS and self.joystick:getX() < -0.8
+  local isJoystickRight = MOBILE_OS and self.joystick:getX() > 0.8
   
   if self.inEncounter then
     playerAnimatorController:SetValue('MoveDown', false)
@@ -34,7 +36,7 @@ function PlayerController:update(dt)
     playerAnimatorController:SetValue('MoveLeft', false)
     playerAnimatorController:SetValue('MoveRight', false)
   else
-    if not self.joystick.enabled then
+    if MOBILE_OS and not self.joystick.enabled then
       self.joystick:enable()
       self.joystick:show()
     end
@@ -66,7 +68,7 @@ function PlayerController:CheckForEncounter()
         end)
     )
     self.inEncounter = true
-    if self.joystick.enabled then
+    if MOBILE_OS and self.joystick.enabled then
       -- force release of virtual joystick button to avoid unwanted movement after encounter
       urutora.released(x, y)
       self.joystick:disable()
