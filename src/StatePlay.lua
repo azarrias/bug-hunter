@@ -7,6 +7,9 @@ function StatePlay:init(monster)
   SOUNDS['field-music']:play()
 end
 
+function StatePlay:enter()
+end
+
 function StatePlay:update(dt)
   self.level:update(dt)
 end

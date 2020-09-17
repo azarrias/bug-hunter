@@ -22,7 +22,11 @@ function love.load()
     stencil = not WEB_OS and true or false
   })
   love.window.setTitle(GAME_TITLE)
-
+  
+  -- Use canvas to draw UI elements to it
+  canvas = love.graphics.newCanvas(VIRTUAL_SIZE.x, VIRTUAL_SIZE.y)
+  urutora.setResolution(canvas:getWidth(), canvas:getHeight())
+  
   -- use a stack for the game state machine
   -- this way, all data and behavior is preserved between state changes
   stateManager = tiny.StackFSM()
@@ -40,6 +44,7 @@ function love.update(dt)
   end
   
   Timer.update(dt)
+  urutora.update(dt)
   stateManager:update(dt)
   
   love.keyboard.keysPressed = {}
@@ -58,15 +63,29 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-  love.mouse.buttonPressed[button] = true
+  urutora.pressed(x, y)
 end
 
 function love.mousereleased(x, y, button)
-  love.mouse.buttonReleased[button] = true
+  urutora.released(x, y)
+end
+
+function love.mousemoved(x, y, dx, dy)
+  urutora.moved(x, y, dx, dy)
 end
 
 function love.draw()
   push:start()
   stateManager:render()
   push:finish()
+  
+  -- draw GUI stuff
+  love.graphics.setCanvas(canvas)
+  love.graphics.clear(bgColor)
+  urutora.draw()
+  love.graphics.setCanvas()
+  love.graphics.draw(canvas, 0, 0, 0,
+    love.graphics.getWidth() / canvas:getWidth(),
+    love.graphics.getHeight() / canvas:getHeight()
+  )
 end

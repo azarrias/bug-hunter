@@ -52,6 +52,14 @@ function StateStart:update(dt)
   end
 end
 
+function love.mousepressed(x, y, button)
+  love.mouse.buttonPressed[button] = true
+end
+
+function love.mousereleased(x, y, button)
+  love.mouse.buttonReleased[button] = true
+end
+
 function StateStart:render()
   love.graphics.clear(188 / 255, 188 / 255, 188 / 255, 1)
   

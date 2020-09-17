@@ -19,8 +19,8 @@ function BehaviourPlayerMovingUp:OnStateUpdate(dt, animatorController)
   entity.position.y = entity.position.y - playerController.speed * dt
   
   -- if there is no collision, make sure that player stays within bounds
-  if entity.position.y <= bounds then
-    entity.position.y = bounds
+  if entity.position.y - ENTITY_SIZE.y / 2 <= bounds then
+    entity.position.y = bounds + ENTITY_SIZE.y / 2
   end
   
   -- there is a chance to find an encounter and enter battle while walking on bushes
