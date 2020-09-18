@@ -7,7 +7,8 @@ function PlayerController:init()
   self.level = nil
   self.monster = nil
   if MOBILE_OS then
-    self.joystick = urutora.joy({ x = 50, y = VIRTUAL_SIZE.y / 2 - 30 / 2, w = 30, h = 30 })
+    local joyX, joyY = 50, VIRTUAL_SIZE.y / 2 - 30 / 2
+    self.joystick = urutora.joy({ x = joyX, y = joyY, w = 30, h = 30 })
     self.joystick:setStyle({
       fgColor = { 0, 0, 0, 0.3 }
     })

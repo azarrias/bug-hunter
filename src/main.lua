@@ -23,10 +23,6 @@ function love.load()
   })
   love.window.setTitle(GAME_TITLE)
   
-  -- Use canvas to draw UI elements to it
-  canvas = love.graphics.newCanvas(VIRTUAL_SIZE.x, VIRTUAL_SIZE.y)
-  urutora.setResolution(canvas:getWidth(), canvas:getHeight())
-  
   -- use a stack for the game state machine
   -- this way, all data and behavior is preserved between state changes
   stateManager = tiny.StackFSM()
@@ -44,7 +40,9 @@ function love.update(dt)
   end
   
   Timer.update(dt)
-  urutora.update(dt)
+  if MOBILE_OS then
+    urutora.update(dt)
+  end
   stateManager:update(dt)
   
   love.keyboard.keysPressed = {}
@@ -64,30 +62,38 @@ end
 
 function love.mousepressed(x, y, button)
   love.mouse.buttonPressed[button] = true
-  urutora.pressed(x, y)
+  if MOBILE_OS then
+    x, y = push:toGame(x, y)
+    if x and y and x > 0 and y > 0 then
+      urutora.pressed(x, y)
+    end
+  end
 end
 
 function love.mousereleased(x, y, button)
   love.mouse.buttonReleased[button] = true
-  urutora.released(x, y)
+  if MOBILE_OS then
+    x, y = push:toGame(x, y)
+    if x and y and x > 0 and y > 0 then
+      urutora.released(x, y)
+    end
+  end
 end
 
 function love.mousemoved(x, y, dx, dy)
-  urutora.moved(x, y, dx, dy)
+  if MOBILE_OS then
+    x, y = push:toGame(x, y)
+    if x and y and x > 0 and y > 0 then
+      urutora.moved(x, y, dx, dy)
+    end
+  end
 end
 
 function love.draw()
   push:start()
   stateManager:render()
+  if MOBILE_OS then
+    urutora.draw()
+  end
   push:finish()
-  
-  -- draw GUI stuff
-  love.graphics.setCanvas(canvas)
-  love.graphics.clear(bgColor)
-  urutora.draw()
-  love.graphics.setCanvas()
-  love.graphics.draw(canvas, 0, 0, 0,
-    love.graphics.getWidth() / canvas:getWidth(),
-    love.graphics.getHeight() / canvas:getHeight()
-  )
 end

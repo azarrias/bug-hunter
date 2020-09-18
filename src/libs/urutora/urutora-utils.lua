@@ -235,7 +235,7 @@ end
 
 function utils.isPointInsideNode(x, y, node)
   if not (x or y) then return end
-  x, y = utils.getMouse()
+  --x, y = utils.getMouse()
 
   return not (
     x < node.x or

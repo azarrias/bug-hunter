@@ -57,6 +57,6 @@ end
 function TileMap:render()
   love.graphics.draw(self.baseSpriteBatch)
   love.graphics.draw(self.grassSpriteBatch)
-  love.graphics.setFont(FONTS['small'])
-  love.graphics.print("FPS: "..love.timer.getFPS(), VIRTUAL_SIZE.x - 35, VIRTUAL_SIZE.y - 10)
+  --love.graphics.setFont(FONTS['small'])
+  --love.graphics.print("FPS: "..love.timer.getFPS(), VIRTUAL_SIZE.x - 35, VIRTUAL_SIZE.y - 10)
 end
