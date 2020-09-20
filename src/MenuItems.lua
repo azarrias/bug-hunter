@@ -40,18 +40,18 @@ function MenuItems:update(dt)
   
   elseif love.mouse.buttonPressed[1] then
     local x, y = push:toGame(love.mouse.getPosition())
-    x = math.min(math.max(-1, x), VIRTUAL_SIZE.x)
-    y = math.min(math.max(-1, y), VIRTUAL_SIZE.y)
     
     local currentY = self.y + math.floor(self.gapHeight / 2)
     for i = 1, #self.items do
       local paddedY = currentY - self.font:getHeight() / 2
       
-      if x >= self.x and x <= self.x + self.width and y >= paddedY and y <= paddedY + self.font:getHeight() then
-        self.items[i].onSelect()
-        SOUNDS['blip']:stop()
-        SOUNDS['blip']:play()
-        break
+      if x and x > 0 and y and y > 0 then
+        if x >= self.x and x <= self.x + self.width and y >= paddedY and y <= paddedY + self.font:getHeight() then
+          self.items[i].onSelect()
+          SOUNDS['blip']:stop()
+          SOUNDS['blip']:play()
+          break
+        end
       end
       
       currentY = currentY + self.gapHeight
